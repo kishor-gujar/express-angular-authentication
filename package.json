@@ -1,0 +1,20 @@
+{
+  "name": "AuthServer",
+  "version": "1.0.0",
+  "description": "Programming place server for authentication",
+  "main": "server.js",
+  "repository": "https://github.com/kishor-gujar/AuthServer.git",
+  "author": "Kishor Gujar <kishorgujar95@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.0.1",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1"
+  }
+}
