@@ -9,6 +9,7 @@ var config = require('./config/main');
 var User = require('./app/models/user');
 var jwt = require('jsonwebtoken');
 var port = 3000;
+var cors = require('cors');
 
 // Use body-parser to get POST requests for api Use
 app.use(bodyParser.urlencoded({ extended:false }));
@@ -19,6 +20,9 @@ app.use(morgan('dev'));
 
 // Initialze Passport for use
 app.use(passport.initialize());
+
+// Enable cores
+app.use(cors());
 
 // connect to database
 mongoose.connect(config.database);
@@ -49,8 +53,8 @@ var apiRoutes = express.Router();
         // Attempt to save the new user
         newuser.save(function(err){
             if(err){
-                return res.json(err.message);
-                // return res.json({ success: false, message: 'That email address already exisit.' });
+                // return res.json(err.message);
+                return res.json({ success: false, message: 'That email address already exisit.' });
             }
             res.json({ success: true, message: 'Successfully created new user.' });
         });
@@ -82,7 +86,16 @@ apiRoutes.post('/authenticate', function(req, res){
 
 // Protected dashbord route with JWT
 apiRoutes.get('/dashboard', passport.authenticate('jwt', { session: false }), function(req, res){
-    res.send('It Worked User id is : ' + req.user._id + '.');
+    res.json({_id:req.user._id});
+});
+
+// Protected Profile route with JWT
+apiRoutes.get('/profile', passport.authenticate('jwt', { session: false }), function(req, res){
+    res.json({
+        _id:req.user._id,
+        firstname:req.user.firstname,
+        email: req.user.email,
+    });
 });
 
 // Set url for API group routes
@@ -90,7 +103,7 @@ app.use('/api', apiRoutes);
 
 // Home route
 app.get('/', (req, res) => {
-    res.send('Relax. We will put the home page here later.')
+    res.send('This is api: Programming palce')
 });
 
 app.listen(port);
